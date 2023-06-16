@@ -58,6 +58,7 @@ def create_diy_response(thingy):
         temperature=0,
     )
     message = response["choices"][0]["message"]
+    print(message)
     if message.get("function_call"):
         function_name = message["function_call"]["name"]
         function_args = json.loads(message["function_call"]["arguments"])
