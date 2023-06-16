@@ -32,8 +32,8 @@ We send prompts to ChatGPT with function name (the name does not matter ...) and
 ## Function Calling
 
 Without function calling, we need to parse the text message from ChatGPT and call our internal API
-<img src="static/diy_assistance_verion1.png" alt="basic" width="600" height="600">
+<img src="static/diy_assistance_verion1.png" alt="basic" width="800" height="600">
 
 
 With function calling, we can pass the JSON schema and have ChatGPT to return structured data
-<img src="static/diy_assistance_verion2.png" alt="basic" width="600" height="600">
+<img src="static/diy_assistance_verion2.png" alt="basic" width="800" height="600">
