@@ -3,10 +3,12 @@ import openai
 import json
 
 
-def post_chatgpt_process(diy_schema):
+def post_chatgpt_process(diy_data):
     """Get the parts URL"""
     print("seatching internal API to get the part URL")
-    return json.dumps(diy_schema)
+    for part in diy_data["parts"]:
+        part["url"] = "https://test.com"
+    return diy_data
 
 
 # the JSON schema for ChatGPT to conver the text response to. In this case, ChatGPT will decide the part name, and instructions
@@ -37,29 +39,31 @@ schema = {
 }
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-response = openai.ChatCompletion.create(
-    model="gpt-4-0613",
-    messages=[
-        {
-            "role": "system",
-            "content": "You are a DIY assistant from the Home Depot. You output structured data for function home_depot_service_params",
-        },
-        {
-            "role": "user",
-            "content": "Provide purchase list and step by step guide to fix leaking toilet",
-        },
-    ],
-    functions=[{"name": "post_chatgpt_process", "parameters": schema}],
-    function_call={"name": "post_chatgpt_process"},
-    temperature=0,
-)
-message = response["choices"][0]["message"]
-if message.get("function_call"):
-    function_name = message["function_call"]["name"]
-    function_args = json.loads(message["function_call"]["arguments"])
-    print(function_args)
-    revised_response = post_chatgpt_process(function_args)
-    print(revised_response)
-else:
-    print(message)
-# print(resonse.choices[0].message.function_call.arguments)
+
+def create_diy_response(thingy):
+    response = openai.ChatCompletion.create(
+        model="gpt-4-0613",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a DIY assistant from the Home Depot. You output structured data for function home_depot_service_params",
+            },
+            {
+                "role": "user",
+                "content": f"Provide purchase list and step by step guide to fix {thingy}",
+            },
+        ],
+        functions=[{"name": "post_chatgpt_process", "parameters": schema}],
+        function_call={"name": "post_chatgpt_process"},
+        temperature=0,
+    )
+    message = response["choices"][0]["message"]
+    if message.get("function_call"):
+        function_name = message["function_call"]["name"]
+        function_args = json.loads(message["function_call"]["arguments"])
+        print(function_args)
+        revised_response = post_chatgpt_process(function_args)
+        return(revised_response)
+    else:
+        return(message)
+    # print(resonse.choices[0].message.function_call.arguments)

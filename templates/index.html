@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+  <title>DIY Helper</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+</head>
+
+<body>
+  <form action="/" method="post">
+    I want to fix <input type="text" name="thingy" placeholder="leakinng toilet" required />
+    <input type="submit" value="Help!" />
+  </form>
+  {% if data %}
+
+  <div class="result">
+    <h2>Parts Needed:</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Part Name</th>
+        <th>URL</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for part in data['parts'] %}
+      <tr> 
+        <td>{{ part['name'] }}</td>
+        <td>{{ part['url']}}</td>
+        <td>{{ part['amount'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    <h2>Instructions:</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Instruction</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for instruction in data['instructions'] %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ instruction }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</body>
