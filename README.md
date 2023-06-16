@@ -1,6 +1,6 @@
 # ChatGPT Examles
 
-Leverage Function-Calling feature of ChatGPT to get structured data output
+In this example, we create a DIY assitant. For example, user can ask "how to fix a leaking toilet?", and we will first ask ChatGPT to get the purchase list and step by step instructions. Then, we call our own internal API to get the recommended products (with URL, price etc).
 
 ## Run
 
@@ -28,3 +28,11 @@ We send prompts to ChatGPT with function name (the name does not matter ...) and
   }
 }
 ````
+
+## Function Calling
+
+Without function calling, we need to parse the text message from ChatGPT and call our internal API
+!basic[/static/diy_assistance_verion1.png]
+
+With function calling, we can pass the JSON schema and have ChatGPT to return structured data
+!function-calling[/static/diy_assistance_verion2.png]
